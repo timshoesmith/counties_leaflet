@@ -39,19 +39,29 @@
     .bindPopup('<div class="marker-container"><h1>Pembroke College</h1></a><button>Read More</button><img width="125px" src="img/castle.jpg"></div>');
     map.fitBounds(venueMarkers.getBounds());
 
+    function polystyle(feature) {
+    return {
+        fillColor: 'gray',
+        weight: 2,
+        opacity: 1,
+        color: 'white',  //Outline color
+        fillOpacity: 0.2
+    };
+}
 
+// L.geoJson(polyData, {style: polystyle}).addTo(map);
 
 
     
    fetch('/json/cambridgeshire.json').then(function (response) {
     return response.json();
    })
-   .then(function (data) {
-        L.geoJSON(data).addTo(map);
-        var cambridgegeoJson = data;
-        var cambridgeLayer = new L.geoJSON(data);
+   .then(function (county) {
+        L.geoJSON(county, {style: polystyle}).addTo(map);
+        var cambridgegeoJson = county;
+        var cambridgeLayer = new L.geoJSON(county);
         cambridgeLayer.addTo(map);
-        map.fitBounds(cambridgeLayer.getBounds());
+        map.fitBounds(cambridgeLayer.getBounds(), {padding: [12,12]});
 
    });
 
